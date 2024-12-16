@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  medicare_app:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    container_name: medicare_node
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+    volumes:
+      - .:/app
+      - /app/node_modules
