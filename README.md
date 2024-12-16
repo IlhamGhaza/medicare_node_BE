@@ -26,8 +26,50 @@ The Medicare Node.js Backend is a RESTful API built using Node.js and Express, d
 
 ## Features
 
-- User authentication and authorization
-- CRUD operations for patient and doctor data
+- Authentication System
+  - User registration
+  - User login with JWT token
+  - Role-based authorization (Admin, Doctor, Patient)
+
+- Patient Management
+  - Create patient profiles
+  - Update patient information
+  - View patient details
+  - Delete patient records
+  - Manage patient medical history
+
+- Doctor Management
+  - Register new doctors
+  - Update doctor profiles
+  - View doctor details
+  - Manage doctor specializations
+  - Doctor availability tracking
+
+- Appointment System
+  - Schedule appointments
+  - View upcoming appointments
+  - Cancel appointments
+  - Reschedule existing appointments
+  - Appointment history
+
+- Medical Records
+  - Create medical records
+  - Update patient diagnoses
+  - Track treatment plans
+  - Manage prescriptions
+  - View medical history
+
+- Admin Dashboard
+  - User management
+  - System monitoring
+  - Access control
+  - Report generation
+
+- Security Features
+  - Password encryption
+  - JWT authentication
+  - Role-based access control
+  - Secure API endpoints
 
 ## Prerequisites
 
@@ -52,20 +94,25 @@ Ensure you have the following installed:
    npm install
    ```
 
-3. **Configure environment variables:**
+3. **Configure database settings**:
 
-   Create a `.env` file in the root directory and add the following configurations:
+The database configuration is stored in config/default.json. The default settings are:
 
    ```env
-   DB_HOST=localhost
-   DB_USER=root
-   DB_PASSWORD=your_password
-   DB_NAME=medicare_db
-   DB_PORT=3306
-   PORT=3000
+   {
+    "dbConfig": {
+        "host": "localhost",
+        "user": "your_username",
+        "password": "your_password",
+        "database": "medicare",
+        "multipleStatements": true,
+        "timezone": "utc+5:30",
+        "charset": "utf8mb4"
+    }
+}
    ```
 
-   Replace `your_password` with your MySQL password.
+   Replace`your_username` and  `your_password` with your MySQL username and password.
 
 ## Running the Application
 
@@ -91,19 +138,7 @@ Ensure you have the following installed:
 
 ### Using Docker
 
-1. **Create a `.env` file for Docker:**
-
-   Create a `.env` file in the root directory with the following configurations:
-
-   ```env
-   MYSQL_ROOT_PASSWORD=your_password
-   MYSQL_DATABASE=medicare_db
-   NODE_PORT=3000
-   ```
-
-   Replace `your_password` with your desired MySQL password.
-
-2. **Run Docker Compose:**
+1. **Run Docker Compose:**
 
    ```bash
    docker-compose up --build
@@ -111,26 +146,28 @@ Ensure you have the following installed:
 
    This command will build and start containers for the Node.js application and MySQL.
 
-3. **Access the application:**
+2. **Access the application:**
 
    Once the containers are running, you can access the application at `http://localhost:3000`.
 
 ## Project Structure
 
-```
+```bash
 medicare_node_BE/
+├── config/
+│   └── default.json
 ├── src/
 │   ├── controllers/
 │   ├── models/
 │   ├── routes/
 │   └── app.js
-├── .env
 ├── docker-compose.yml
 ├── Dockerfile
 ├── package.json
 └── README.md
 ```
 
+- `config/`: Contains configuration files.
 - `src/controllers/`: Contains logic for handling requests.
 - `src/models/`: Contains database model definitions.
 - `src/routes/`: Contains API route definitions.
@@ -158,6 +195,8 @@ If you previously used a different database package and wish to switch to the `m
 
    ```javascript
    const mysql = require('mysql');
+   const config = require('config');
+   const dbConfig = config.get('dbConfig');
 
    const connection = mysql.createConnection({
      host: process.env.DB_HOST,
@@ -174,12 +213,6 @@ If you previously used a different database package and wish to switch to the `m
      }
      console.log('Connected to MySQL as id ' + connection.threadId);
    });
-   ```
-
-   Ensure you import environment variables from the `.env` file using a package like `dotenv`:
-
-   ```javascript
-   require('dotenv').config();
    ```
 
 ## Contribution

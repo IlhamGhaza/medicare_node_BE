@@ -1,5 +1,5 @@
 const HOST = "192.168.1.12"; // IP address of the server or localhost
-const PORT = 3002;
+const PORT = 3000; // Port number of the server
 const BASE_URL = `http://${HOST}:${PORT}`;
 console.log("Sever run at : " + BASE_URL);
 
